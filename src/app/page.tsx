@@ -1,24 +1,28 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { NavMenu } from "@/components/nav/Nav";
+import TaskPage from "@/components/pages/task";
+import store from "@/store";
+import { useSession } from "next-auth/react";
+import { Provider } from "react-redux";
 
-export default function AuthButton() {
+
+export default function Home() {
   const { data: session } = useSession();
 
-  if (session) {
-    return (
-      <div>
-        <p>Hola, {session.user?.name}</p>
-        <button onClick={() => signOut()} className="btn">
-          Cerrar sesion
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <button onClick={() => signIn()} className="btn">
-      Iniciar sesión
-    </button>
+    <Provider store={store}>
+      <div>
+        <NavMenu />
+        {session && <TaskPage/>}
+        {!session && <div style={{
+          display:'flex',
+          width:'100%',
+          padding:'15px',
+          boxSizing:'border-box',
+        }}>Es nesesario iniciar session para administrar el listado</div>}
+      </div>
+    </Provider>
+   
   );
 }
