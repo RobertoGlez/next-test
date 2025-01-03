@@ -10,7 +10,7 @@ export default function AuthButton() {
       <div>
         <p>Hola, {session.user?.name}</p>
         <button onClick={() => signOut()} className="btn">
-          Cerrar sesión
+          Cerrar sesion
         </button>
       </div>
     );
