@@ -1,10 +1,16 @@
 {
-    "task": [
+  "tasks": [
     {
-        "id": 1, "title": "firs task", "email":""
+      "id": "1",
+      "description": "Leer Documentacion de NextAuth",
+      "title": "Aprender a usar nextauth para autenticacion",
+      "completed": true
     },
-    { 
-        "id": 2, "title": "second task", "email":""
+    {
+      "id": "2",
+      "description": "Implementar Redux",
+      "title": "Hacer una implementacion de redux",
+      "completed": true
     }
   ]
 }
