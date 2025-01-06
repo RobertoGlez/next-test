@@ -1,10 +1,12 @@
 import ButtonCustom from "@/components/buttons/ButtonCustom"
 import InputField from "@/components/input/CustomInput"
+import TextAreaField from "@/components/input/CustomTextArea"
+
 import { Task } from "@/store/slices/taskSlice"
 import { useState } from "react"
 
 interface TaskInputsProps {
-    onSubmit:(item: Omit<Task,'id'>)=>void
+    onSubmit:(item: Omit<Task,'id' | 'createdAt'>)=>void
 }
 export const TaskInputs: React.FC<TaskInputsProps> = ({
     onSubmit,
@@ -18,7 +20,7 @@ export const TaskInputs: React.FC<TaskInputsProps> = ({
         onSubmit({
             description,
             title,
-            completed: false
+            completed: false,
         })
     }
     return <div style={{
@@ -36,13 +38,12 @@ export const TaskInputs: React.FC<TaskInputsProps> = ({
           label="Nombre" 
           key={'NombreInput'} 
           type="text"/>
-        <InputField
+        <TextAreaField
           value={description}
           onChange={setDescription} 
-          id="title" 
+          id="description" 
           label="Descripcion" 
-          key={'DescriptionInput'} 
-          type="text"/>
+          key={'DescriptionInput'} />
         <ButtonCustom style={{
             width:'100%'
         }} 
