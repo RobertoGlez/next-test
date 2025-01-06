@@ -25,6 +25,10 @@ const ButtonCustom: React.FC<ButtonCustomProps> = ({ text, onClick, variant = "p
       style={{
         fontSize:'14px',
         maxHeight:'40px',
+        opacity: disabled ? '0.6': '1',
+        background: disabled ? '#cccccc' : undefined,
+        color: disabled ? '#666666' : undefined,
+        cursor: disabled ? undefined : 'pointer',
         ...style
       }}
     >

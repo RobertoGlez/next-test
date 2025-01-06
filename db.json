@@ -4,13 +4,15 @@
       "id": "1",
       "description": "Leer Documentacion de NextAuth",
       "title": "Aprender a usar nextauth para autenticacion",
-      "completed": true
+      "completed": true,
+      "createdAt":"2025-01-04T19:18:02.180Z"
     },
     {
       "id": "2",
       "description": "Implementar Redux",
       "title": "Hacer una implementacion de redux",
-      "completed": true
+      "completed": true,
+      "createdAt":"2025-01-04T19:18:02.180Z"
     }
   ]
 }

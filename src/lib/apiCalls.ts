@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import api from './axiosClient';
 import { Task } from '@/store/slices/taskSlice';
 
@@ -8,18 +9,19 @@ export const getTasks = async () => {
 };
 
 // Agregar una nueva tarea
-export const addTask = async (task: Omit<Task,'id'>) => {
-  const response = await api.post('/tasks', {
+export const addTask = async (task: Omit<Task,'id' | 'createdAt'>) => {
+  const response = await api.post<Task>('/tasks', {
     title: task.title,
     completed: task.completed,
-    description: task.description
+    description: task.description,
+    createdAt: DateTime.utc().toJSDate()
   });
   return response.data;
 };
 
 // Actualizar una tarea existente
-export const updateTask = async (id: string, updates: Omit<Task,'id'>) => {
-  const response = await api.patch(`/tasks/${id}`, {
+export const updateTask = async (id: string, updates: Task) => {
+  const response = await api.put(`/tasks/${id}`, {
     title: updates.title,
     completed: updates.completed,
     description: updates.description

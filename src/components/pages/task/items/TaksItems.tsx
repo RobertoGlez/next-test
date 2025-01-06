@@ -1,9 +1,10 @@
 import ButtonCustom from "@/components/buttons/ButtonCustom";
 import { Task } from "@/store/slices/taskSlice";
+import { useState } from "react";
 interface TaskItemProps {
     style?: React.CSSProperties;
     item: Task,
-    onEdit: (task: Task)=>void,
+    onEdit: (task:Task)=>void,
     onDelete: (id: string)=>void,
 }
 export const TaskItem:React.FC<TaskItemProps> = ({
@@ -12,13 +13,27 @@ export const TaskItem:React.FC<TaskItemProps> = ({
     onDelete,
     onEdit,
 })=>{
+    const [editMode, setEditMode] = useState(false);
+    const [title, setTitle] = useState(item.title);
+    const [description, setDescription]= useState(item.description);
+    const [completed, setCompleted] = useState(item.completed);
+
+    const handleLocalEdit = ()=>{
+        onEdit({
+            id: item.id,
+            createdAt: item.createdAt,
+            completed: completed,
+            description: description,
+            title: title
+        });
+    }
+    const isChange = (): boolean=>{
+        return completed !== item.completed || description !== item.description || title !== item.title
+    }
     return <div style={{
         display:'flex',
         flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        gap:'5px',
-        background:'white',
+        background: editMode ? '#b8cfff':'whitesmoke',
         color:'black',
         width:'80%',
         margin:'auto',
@@ -30,55 +45,113 @@ export const TaskItem:React.FC<TaskItemProps> = ({
         <div hidden>
             id: {item.id}
         </div>
-        <div className="LabelTask" style={{
-            display:'flex',
-            flexDirection:'column',
-        }}>
-      
-            <div style={{
+        {
+            editMode 
+            ? <div style={{
                 display:'flex',
+                width:'100%',
                 flexDirection:'row',
-                gap:'10px',
+                justifyContent:'space-between',
+                alignItems:'center',
+                gap:'10px'
             }}>
                 <div>
-                    <input type="checkbox" checked={item.completed} onChange={()=> {
-                        onEdit({
-                            completed: !item.completed,
-                            ...{
-                                description: item.description,
-                                id: item.id,
-                                title: item.title,
-                            },
-                        })
-                    }}/>
+                    <div style={{
+                        display:'flex',
+                        flexDirection:'row',
+                        gap:'10px'
+                    }}>
+                        <input type="checkbox" checked={completed} onChange={()=>setCompleted(!completed)}/>
+                        <input style={{
+                            padding:'5px',
+                            boxSizing:'border-box',
+                            fontWeight:'600'
+                        }} type="text" value={title} onChange={(event)=>setTitle(event.target.value)}/>
+                        <input style={{
+                            padding:'5px',
+                            boxSizing:'border-box',
+                        }} type="text" value={description} onChange={(event)=>setDescription(event.target.value)}/>
+                    </div>
                 </div>
-                <div style={{  
-                  fontSize:'15px',
-                  fontWeight:'600',
+                <div style={{
+                    display:'flex',
+                    gap:'10px',
+
                 }}>
-                    {item.title}
+                    <ButtonCustom
+                        disabled={!isChange()}
+                        onClick={()=>handleLocalEdit()}
+                        text="guardar"/>
+                    <ButtonCustom
+                        text="cancelar"
+                        variant="danger" 
+                        onClick={()=>setEditMode(false)}/>
                 </div>
-          
+                
             </div>
-            <div style={{
-                fontSize:'14px',
-                fontWeight:'400'
+            : <div style={{
+                display:'flex',
+                flexDirection:'row',
+                justifyContent:'space-between',
+                width:'100%' 
             }}>
-                {
-                    item.description
-                }
+                 <div className="LabelTask" style={{
+                    display:'flex',
+                    flexDirection:'column',
+                }}>
+            
+                    <div style={{
+                        display:'flex',
+                        flexDirection:'row',
+                        gap:'10px',
+                    }}>
+                        <div>
+                            <input type="checkbox" checked={item.completed} onChange={()=> {
+                                onEdit({
+                                    completed: !item.completed,
+                                    ...{
+                                        description: item.description,
+                                        id: item.id,
+                                        title: item.title,
+                                        createdAt: item.createdAt,
+                                    },
+                                })
+                            }}/>
+                        </div>
+                        <div style={{  
+                        fontSize:'15px',
+                        fontWeight:'600',
+                        }}>
+                            {item.title}
+                        </div>
+                
+                    </div>
+                    <div style={{
+                        fontSize:'14px',
+                        fontWeight:'400'
+                    }}>
+                        {
+                            item.description
+                        }
+                    </div>
+                </div>
+                <div style={{
+                    display:'flex',
+                    gap:'10px',
+                }}>
+                    <div>
+                        <ButtonCustom text="editar" onClick={()=> {
+                            //onEdit(item)
+                            setEditMode(true);
+                        }}/>
+                    </div>
+                    <div>
+                        <ButtonCustom text="eliminar" variant="danger" onClick={()=> onDelete(item.id)}/>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div style={{
-            display:'flex',
-            gap:'10px',
-        }}>
-            <div>
-                <ButtonCustom text="editar" onClick={()=> onEdit(item)}/>
-            </div>
-            <div>
-                <ButtonCustom text="eliminar" variant="danger" onClick={()=> onDelete(item.id)}/>
-            </div>
-        </div>
+        }
+       
+       
     </div>
 }

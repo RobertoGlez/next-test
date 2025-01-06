@@ -27,7 +27,7 @@ export default function TaskPage(){
         fetchTasks();
     },[]);
 
-    const handleEditTask = async(item:Task)=>{
+    const handleEditTask = async(item: Task)=>{
         console.log('edit task', item);
         dispatch(setLoading(true));
         const result = await updateTask(item.id,item);
@@ -48,12 +48,12 @@ export default function TaskPage(){
         }
         dispatch(setLoading(false));
     }
-    const handleAddTask = async (item: Task)=>{
+    const handleAddTask = async (item: Omit<Task, 'id' | 'createdAt'>)=>{
         dispatch(setLoading(true));
         const result = await addTask(item);
         if(result){
-            dispatch(addTaskAction(item))
-            await fetchTasks()
+            const task: Task = result;
+            dispatch(addTaskAction(task))
         }else{
             console.error('No se pudo guardar la tarea');
         }
@@ -81,7 +81,6 @@ export default function TaskPage(){
             </div>
             <TaskInputs onSubmit={(item)=>{
                handleAddTask({
-                id:'delete',
                 ...item
                });
             }}/>
