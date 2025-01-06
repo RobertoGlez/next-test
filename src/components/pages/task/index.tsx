@@ -77,7 +77,7 @@ export default function TaskPage(){
                 fontSize:'20px',
                 fontWeight:'600'
             }}>
-                Task Manager List
+                Lista de tareas
             </div>
             <TaskInputs onSubmit={(item)=>{
                handleAddTask({
